@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 3,
     "file": "https://raw.githubusercontent.com/codewithvignesh-dev/Play-Integrity-Fixer/main/fingerprints/keybox.xml",
     "sha256": "306ad4aa4229b00d381dd15291c1e87deb3b4212046493a1f3c2e3037ea7dd03",
     "changelog": "Passes 2 Integrity"
