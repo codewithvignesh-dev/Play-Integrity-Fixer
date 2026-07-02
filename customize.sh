@@ -46,5 +46,4 @@ set_perm "$MODPATH/post-fs-data.sh" 0 0 0755
 set_perm "$MODPATH/uninstall.sh" 0 0 0755
 
 set_perm_recursive "$MODPATH/scripts" 0 0 0755 0755
-set_perm_recursive "$MODPATH/system" 0 0 0755 0644
 

@@ -5,7 +5,7 @@ MODDIR=/data/adb/modules/integrityfixer
 
 TITLE="Play Integrity Fixer"
 
-API_URL="${KEYBOX_BASE_URL:-https://keybox.codewithvignesh.live/update.php}"
+API_URL="${KEYBOX_BASE_URL:-https://keybox.codewithvignesh.live/index.php}"
 
 TMP=/data/local/tmp/integrityfixer
 mkdir -p "$TMP"
@@ -17,10 +17,6 @@ LOCAL_HASH=""
 if [ -s "$CURRENT_KEYBOX" ]; then
     LOCAL_HASH=$(sha256sum "$CURRENT_KEYBOX" | awk '{print $1}')
 fi
-
-sh "$MODDIR/scripts/notifier.sh" \
-    "$TITLE" \
-    "Checking keybox updates..."
 
 # Fetch API response
 if ! curl -fsSL "$API_URL" -o "$TMP/response.json"; then
@@ -35,10 +31,6 @@ REMOTE_HASH=$(grep -o '"sha256"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.
 REMOTE_VERSION=$(grep -o '"version"[[:space:]]*:[[:space:]]*[0-9]\+' "$TMP/response.json" \
     | grep -o '[0-9]\+')
 
-# Extract download URL (optional, useful later)
-DOWNLOAD_URL=$(grep -o '"download_url"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.json" \
-    | cut -d'"' -f4)
-
 # Validate required fields
 [ -n "$REMOTE_HASH" ] || exit 1
 [ -n "$REMOTE_VERSION" ] || exit 1
@@ -46,6 +38,10 @@ DOWNLOAD_URL=$(grep -o '"download_url"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/re
 # Compare hashes
 if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
 
+    # Extract download URL (optional, useful later)
+    DOWNLOAD_URL=$(grep -o '"download_url"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.json" \
+        | cut -d'"' -f4)
+    
     sh "$MODDIR/scripts/notifier.sh" \
         "$TITLE" \
         "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
