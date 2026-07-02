@@ -20,7 +20,15 @@ if [ -n "$DOWNLOAD_URL" ]; then
     sh "$MODDIR/scripts/notifier.sh" \
         "Play Integrity Fixer" \
         "Updating the latest keybox from Magisk."
-    curl -fsSL "$DOWNLOAD_URL" -o "$KEYBOX_PATH"
+    if curl -fsSL "$DOWNLOAD_URL" -o "$KEYBOX_PATH"; then
+        sh "$MODDIR/scripts/notifier.sh" \
+            "Play Integrity Fixer" \
+            "Update completed. Please reboot your device."
+    else
+        sh "$MODDIR/scripts/notifier.sh" \
+            "Play Integrity Fixer" \
+            "Failed to update the keybox."
+    fi
 fi
 
 exit 0
