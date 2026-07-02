@@ -28,8 +28,10 @@ REMOTE_HASH=$(grep -o '"sha256"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.
     | cut -d'"' -f4)
 
 # Extract remote version
-REMOTE_VERSION=$(grep -o '"version"[[:space:]]*:[[:space:]]*[0-9]\+' "$TMP/response.json" \
-    | grep -o '[0-9]\+')
+REMOTE_VERSION=$(grep '"version"' "$TMP/response.json" |
+    cut -d':' -f2 |
+    tr -d ' ,'
+)
 
 # Validate required fields
 [ -n "$REMOTE_HASH" ] || exit 1
@@ -38,14 +40,15 @@ REMOTE_VERSION=$(grep -o '"version"[[:space:]]*:[[:space:]]*[0-9]\+' "$TMP/respo
 # Compare hashes
 if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
 
-    # Extract download URL (optional, useful later)
-    DOWNLOAD_URL=$(grep -o '"download_url"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.json" \
-        | cut -d'"' -f4)
-    
-    sh "$MODDIR/scripts/notifier.sh" \
-        "$TITLE" \
-        "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
+    if [ "$LAST_NOTIFIED_VERSION" != "$REMOTE_VERSION" ]; then
 
+        sh "$MODDIR/scripts/notifier.sh" \
+            "$TITLE" \
+            "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
+
+        sed -i \
+            "s/^LAST_NOTIFIED_VERSION=.*/LAST_NOTIFIED_VERSION=$REMOTE_VERSION/" \
+            "$MODDIR/config/settings.conf"
+    fi
 fi
-
 exit 0
