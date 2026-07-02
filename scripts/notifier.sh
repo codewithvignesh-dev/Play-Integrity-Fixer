@@ -1,7 +1,5 @@
 #!/system/bin/sh
 
-#!/system/bin/sh
-
 TITLE="$1"
 MESSAGE="$2"
 

@@ -40,15 +40,9 @@ REMOTE_VERSION=$(grep '"version"' "$TMP/response.json" |
 # Compare hashes
 if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
 
-    if [ "$LAST_NOTIFIED_VERSION" != "$REMOTE_VERSION" ]; then
+    sh "$MODDIR/scripts/notifier.sh" \
+        "$TITLE" \
+        "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
 
-        sh "$MODDIR/scripts/notifier.sh" \
-            "$TITLE" \
-            "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
-
-        sed -i \
-            "s/^LAST_NOTIFIED_VERSION=.*/LAST_NOTIFIED_VERSION=$REMOTE_VERSION/" \
-            "$MODDIR/config/settings.conf"
-    fi
 fi
 exit 0

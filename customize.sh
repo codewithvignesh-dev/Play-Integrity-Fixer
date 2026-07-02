@@ -27,7 +27,7 @@ chmod 755 "$MODPATH/uninstall.sh"
 
 ui_print "- Installing Integrity Fixer Notifier..."
 
-pm install -r "$MODPATH/app/IntegrityFixerNotifier.apk" >/dev/null 2>&1
+pm install -r "$MODPATH/app/Play-Integrity-Fixer.apk" >/dev/null 2>&1
 
 if [ $? -eq 0 ]; then
   ui_print "- Notifier installed."
