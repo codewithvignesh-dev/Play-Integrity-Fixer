@@ -1,6 +1,7 @@
 id=integrityfixer
-name=Integrity Fixer
-version=1.0
-versionCode=1
+name=Play Integrity Fixer
+version=v1.0
+versionCode=10
 author=CodeWithVignesh
-description=Fixes Play Integrity lively and avoids softbanned ones
+description=Automatically checks, downloads, and applies the latest Play Integrity keybox to help maintain device integrity.
+updateJson=https://raw.githubusercontent.com/codewithvignesh-dev/Play-Integrity-Fixer/main/update.json
