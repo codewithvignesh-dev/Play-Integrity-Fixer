@@ -136,8 +136,8 @@ fi;
 if [ -f PIXEL_ZIP_HEADERS ] && grep -q 'Last-Modified' PIXEL_ZIP_HEADERS; then
   CANARY_REL_DATE="$(date -D '%a, %d %b %Y %H:%M:%S %Z' -d "$(grep -o 'Last-Modified.*' PIXEL_ZIP_HEADERS | cut -d\  -f2-)" '+%Y-%m-%d')";
   CANARY_EXP_DATE="$(date -D '%s' -d "$(($(date -D '%Y-%m-%d' -d "$CANARY_REL_DATE" '+%s') + 60 * 60 * 24 * 7 * 6))" '+%Y-%m-%d')";
-  echo "Canary Released: $CANARY_REL_DATE \
-    \nEstimated Expiry: $CANARY_EXP_DATE";
+  echo "Canary Released: $CANARY_REL_DATE"
+  echo "Estimated Expiry: $CANARY_EXP_DATE"
 else
   warn "Failed to determine Release Date from HTTP headers";
   CANARY_REL_DATE="Unknown";
