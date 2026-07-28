@@ -13,21 +13,22 @@ echo "      Play Integrity Fixer"
 echo "=================================="
 echo
 
+sh $MODPATH/autopif4.sh -m || exit 1
 sh "$MODDIR/scripts/updater.sh" --check
 
 if [ -n "$DOWNLOAD_URL" ]; then
     echo "Updating process is going on background"
     sh "$MODDIR/scripts/notifier.sh" \
         "Play Integrity Fixer" \
-        "Updating the latest keybox from Magisk."
+        "Refreshing the device keybox..."
     if curl -fsSL "$DOWNLOAD_URL" -o "$KEYBOX_PATH"; then
         sh "$MODDIR/scripts/notifier.sh" \
             "Play Integrity Fixer" \
-            "Update completed. Please reboot your device."
+            "Update Completed. Strong Integrity has been restored successfully."
     else
         sh "$MODDIR/scripts/notifier.sh" \
             "Play Integrity Fixer" \
-            "Failed to update the keybox."
+            "Failed to restore the Strong Integrity."
     fi
 fi
 

@@ -1,0 +1,58 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+*.orig
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Build artifacts
+build/
+dist/
+out/
+bin/
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Generated configuration
+custom.pif.prop
+custom.pif.json
+pif.prop
+
+# Local cache
+.git/
+cache/
+.cache/
+*.cache
+
+# Test output
+test-output/
+coverage/
+PIXEL*
