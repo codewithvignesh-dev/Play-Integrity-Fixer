@@ -73,7 +73,7 @@ if [ "$DIR" = /data/adb/modules/integrityfixer ]; then
 fi;
 cd "$DIR";
 
-uiprint "▸ Fetching latest Pixel Beta device manifest..."
+printf "\n▸ Fetching latest Pixel Beta device manifest...\n"
 wget -q -O PIXEL_VERSIONS_HTML --no-check-certificate "https://developer.android.com/about/versions" 2>&1 || exit 1;
 wget -q -O PIXEL_LATEST_HTML --no-check-certificate "$(grep -o 'https://developer.android.com/about/versions/.*[0-9]"' PIXEL_VERSIONS_HTML | sort -ru | cut -d\" -f1 | head -n1 | tail -n1)" 2>&1 || exit 1;
 wget -q -O PIXEL_FI_HTML --no-check-certificate "https://developer.android.com$(grep -o 'href=".*download.*"' PIXEL_LATEST_HTML | grep 'qpr' | cut -d\" -f2 | head -n1 | tail -n1)" 2>&1 || exit 1;
@@ -92,7 +92,7 @@ if [ "$FORCE_MATCH" ]; then
     ;;
   esac;
 fi;
-uiprint "▸ Resolving latest Pixel Beta device profile..."
+printf "\n▸ Resolving latest Pixel Beta device profile...\n"
 if [ -z "$PRODUCT" ]; then
   set_random_beta() {
     local list_count="$(echo "$MODEL_LIST" | wc -l)";
@@ -108,7 +108,7 @@ if [ -z "$PRODUCT" ]; then
 fi;
 echo "$MODEL ($PRODUCT)";
 
-uiprint "▸ Fetching latest Pixel Canary build manifest..."
+printf "\n▸ Fetching latest Pixel Canary build manifest...\n"
 wget -q -O PIXEL_FLASH_HTML --no-check-certificate "https://flash.android.com/" 2>&1 || exit 1;
 wget -q -O PIXEL_STATION_JSON --header "Referer: https://flash.android.com" --no-check-certificate "https://content-flashstation-pa.googleapis.com/v1/builds?product=$PRODUCT&key=$(grep -o '<body data-client-config=.*' PIXEL_FLASH_HTML | cut -d\; -f2 | cut -d\& -f1)" 2>&1 || exit 1;
 tac PIXEL_STATION_JSON | grep -m1 -A13 '"canary": true' > PIXEL_CANARY_JSON;
@@ -144,19 +144,19 @@ else
   CANARY_EXP_DATE="Unknown";
 fi;
 
-uiprint "Crawling Pixel Update Bulletins for corresponding security patch level ..."
+printf "\nCrawling Pixel Update Bulletins for corresponding security patch level ...\n"
 CANARY_ID="$(grep '"id"' PIXEL_CANARY_JSON | sed -e 's;.*canary-\(.*\)".*;\1;' -e 's;^\(.\{4\}\);\1-;')";
 [ -z "$CANARY_ID" ] && die "Failed to extract build info from JSON";
 wget -q -O PIXEL_SECBULL_HTML --no-check-certificate "https://source.android.com/docs/security/bulletin/pixel" 2>&1 || exit 1;
 SECURITY_PATCH="$(grep "<td>$CANARY_ID" PIXEL_SECBULL_HTML | sed 's;.*<td>\(.*\)</td>;\1;')";
 if [ -z "$SECURITY_PATCH" ]; then
   warn "Failed to determine exact security patch level from Pixel Update Bulletins";
-  uiprint "Assuming probable security patch level from Canary build info ..."
+  printf "\nAssuming probable security patch level from Canary build info ...\n"
   SECURITY_PATCH="${CANARY_ID}-05";
 fi;
 echo "$SECURITY_PATCH";
 
-uiprint "▸ Assembling minimal PIF profile..."
+printf "\n▸ Assembling minimal PIF profile...\n"
 cat <<EOF | tee pif.prop;
 MANUFACTURER=Google
 MODEL=$MODEL
@@ -182,13 +182,13 @@ if [ -f "$MIGRATE" ]; then
     FORCE_STRONG=1;
   fi;
   if [ "$FORCE_STRONG" ]; then
-    uiprint "Forcing configuration for <A13 PI Strong ..."
+    printf "\nForcing configuration for <A13 PI Strong ...\n"
     ARGS="-a"; PATCH_COMMENT=1; spoofProvider=0;
   else
-    uiprint "Retaining existing configuration ..."
+    printf "\nRetaining existing configuration ...\n"
   fi;
   [ -d /data/adb/tricky_store ] && unset PATCH_COMMENT;
-  uiprint "▸ Building advanced custom PIF profile..."
+  printf "\n▸ Building advanced custom PIF profile...\n"
   rm -f pif.json custom.pif.json custom.pif.prop;
   sh $MIGRATE -i $ARGS pif.prop;
   if [ -n "$ARGS" ]; then
@@ -221,18 +221,18 @@ if [ "$DIR" = /data/adb/modules/integrityfixer/autopif4 ]; then
   fi;
   for OLDPIF in $NEWNAME custom.pif.json; do
     if [ -f "../$OLDPIF" ]; then
-      uiprint "Renaming old file to $OLDPIF.bak ..."
+      printf "\nRenaming old file to $OLDPIF.bak ...\n"
       mv -fv ../$OLDPIF ../$OLDPIF.bak;
     fi;
   done;
-  uiprint "Installing new prop ..."
+  printf "\nInstalling new prop ...\n"
   cp -fv $NEWNAME ..;
   TS_DIR=/data/adb/tricky_store;
   if [ -d "$TS_DIR" ]; then
     TS_SECPAT=$TS_DIR/security_patch.txt;
     touch $TS_SECPAT;
     if [ -f /data/adb/modules/tricky_store/libTEESimulator.so ]; then
-      uiprint "Updating TEESimulator security_patch.txt ..."
+      printf "\nUpdating TEESimulator security_patch.txt ...\n"
       if [ ! -s "$TS_SECPAT" ]; then
         cat <<EOF > $TS_SECPAT;
 all=
@@ -242,7 +242,7 @@ system=no
 EOF
       fi;
     else
-      uiprint "Updating Tricky Store security_patch.txt ..."
+      printf "\nUpdating Tricky Store security_patch.txt ...\n"
       [ -s "$TS_SECPAT" ] || echo "all=" > $TS_SECPAT;
       grep -qE '^[0-9]{8}$' $TS_SECPAT && sed -i "s/^.*$/${SECURITY_PATCH//-}/" $TS_SECPAT;
       grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' $TS_SECPAT && sed -i "s/^.*$/$SECURITY_PATCH/" $TS_SECPAT;
@@ -257,7 +257,7 @@ EOF
     cat $TS_SECPAT;
   fi;
   if [ -f /data/adb/modules/integrityfixer/killpi.sh ]; then
-    uiprint "Killing any running GMS DroidGuard/Play Store processes ..."
+    printf "\nKilling any running GMS DroidGuard/Play Store processes...\n"
     sh /data/adb/modules/integrityfixer/killpi.sh 2>&1 || true;
   fi;
 fi;
