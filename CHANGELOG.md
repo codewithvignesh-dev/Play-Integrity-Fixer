@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.3.0
+
+### Added
+
+- Added AutoPIF integration for automatic Play Integrity profile generation.
+- Added automatic retrieval of the latest Pixel Beta device catalog.
+- Added automatic retrieval of the latest Pixel Canary build metadata.
+- Added automatic generation of minimal PIF profiles.
+- Added automatic migration to an advanced custom PIF profile.
+- Added profile metadata caching for improved generation efficiency.
+- Added expiry date tracking for generated Canary profiles.
+- Added support for automatic profile regeneration before profile expiry.
+- Added Premium CLI interface with streamlined progress reporting.
+- Added completion status reporting after successful profile generation.
+
+### Changed
+
+- Redesigned the entire CLI output with a consistent Premium CLI theme.
+- Improved profile generation workflow and status reporting.
+- Simplified migration output while preserving generated configuration files.
+- Updated notification messages with clearer and more professional wording.
+- Improved profile generation reliability and metadata handling.
+
+### Fixed
+
+- Fixed profile migration compatibility with generated PIF configurations.
+- Fixed metadata mapping during custom profile generation.
+- Fixed fingerprint-derived field generation.
+- Various stability improvements and bug fixes.
+
+### Credits
+- AutoPIF4 implementation based on the work of [@osm0sis](https://github.com/osm0sis).
+
+---
+
 ## v1.2.0
 
 ### Added
