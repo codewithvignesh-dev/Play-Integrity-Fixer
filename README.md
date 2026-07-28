@@ -1,5 +1,7 @@
 # Play Integrity Fixer
 
+<a><img src="Banner.png"><a>
+
 A Magisk module that automatically keeps your Play Integrity configuration up to date by checking for the latest Keybox and PIF updates.
 
 ## Features
