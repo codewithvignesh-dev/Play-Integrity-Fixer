@@ -68,7 +68,7 @@ if ! echo "A\nB" | grep -m1 -A1 "A" | grep -q "B"; then
   fi;
 fi;
 
-if [ "$DIR" = /data/adb/modules/playintegrityfix ]; then
+if [ "$DIR" = /data/adb/modules/integrityfixer ]; then
   DIR=$DIR/autopif4;
   mkdir -p $DIR;
 fi;
@@ -168,11 +168,11 @@ SECURITY_PATCH=$SECURITY_PATCH
 DEVICE_INITIAL_SDK_INT=32
 EOF
 
-for MIGRATE in migrate.sh /data/adb/modules/playintegrityfix/migrate.sh; do
+for MIGRATE in migrate.sh /data/adb/modules/integrityfixer/migrate.sh; do
   [ -f "$MIGRATE" ] && break; 
 done;
 if [ -f "$MIGRATE" ]; then
-  for OLDPIF in /data/adb/modules/playintegrityfix/custom.pif.prop /data/adb/modules/playintegrityfix/custom.pif.json; do
+  for OLDPIF in /data/adb/modules/integrityfixer/custom.pif.prop /data/adb/modules/integrityfixer/custom.pif.json; do
     [ -f "$OLDPIF" ] && break;
   done;
   if [ -f "$OLDPIF" ]; then
@@ -214,8 +214,8 @@ if [ -f "$MIGRATE" ]; then
   # cat custom.pif.prop;
 fi;
 
-if [ "$DIR" = /data/adb/modules/playintegrityfix/autopif4 ]; then
-  if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
+if [ "$DIR" = /data/adb/modules/integrityfixer/autopif4 ]; then
+  if [ -f /data/adb/modules/integrityfixer/migrate.sh ]; then
     NEWNAME="custom.pif.prop";
   else
     NEWNAME="pif.prop";
@@ -257,8 +257,8 @@ EOF
     sed -i '$a\' $TS_SECPAT;
     cat $TS_SECPAT;
   fi;
-  if [ -f /data/adb/modules/playintegrityfix/killpi.sh ]; then
+  if [ -f /data/adb/modules/integrityfixer/killpi.sh ]; then
     item "Killing any running GMS DroidGuard/Play Store processes ...";
-    sh /data/adb/modules/playintegrityfix/killpi.sh 2>&1 || true;
+    sh /data/adb/modules/integrityfixer/killpi.sh 2>&1 || true;
   fi;
 fi;

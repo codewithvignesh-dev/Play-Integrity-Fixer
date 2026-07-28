@@ -13,7 +13,7 @@ echo "      Play Integrity Fixer"
 echo "=================================="
 echo
 
-sh $MODPATH/autopif4.sh -m || exit 1
+sh "$MODDIR/autopif4.sh" -m || exit 1
 sh "$MODDIR/scripts/updater.sh" --check
 
 if [ -n "$DOWNLOAD_URL" ]; then
