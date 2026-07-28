@@ -10,7 +10,6 @@ case "$1" in
     $N  by osm0sis @ xda-developers $N";;
 esac;
 
-item() { echo "- $@"; }
 die() { [ "$INSTALL" ] || echo "$N$N! $@"; exit 1; }
 
 until [ -z "$1" -o -f "$1" ]; do
@@ -84,7 +83,7 @@ OUT="$2";
 
 grep_check_config api_level && [ ! "$FORCE" ] && die "No migration required";
 
-[ "$INSTALL" ] || item "Parsing fields ...";
+[ "$INSTALL" ] || uiprint "Parsing fields ..."
 
 FPFIELDS="BRAND PRODUCT DEVICE RELEASE ID INCREMENTAL TYPE TAGS";
 ALLFIELDS="MANUFACTURER MODEL FINGERPRINT $FPFIELDS SECURITY_PATCH DEVICE_INITIAL_SDK_INT";
@@ -94,37 +93,37 @@ for FIELD in $ALLFIELDS; do
 done;
 
 if [ -n "$ID" ] && ! grep_check_config build.id; then
-  item "▸ Mapping ID to build property schema...";
+  uiprint "▸ Mapping ID to build property schema..."
 fi;
 
 if [ -z "$ID" ] && grep_check_config BUILD_ID; then
-  item "▸ Upgrading deprecated BUILD_ID mapping...";
+  uiprint "▸ Upgrading deprecated BUILD_ID mapping..."
   ID="$(grep_get_config BUILD_ID)";
 fi;
 
 if [ -n "$SECURITY_PATCH" ] && ! grep_check_config security_patch; then
-  item "▸ Mapping security patch metadata...";
+  uiprint "▸ Mapping security patch metadata..."
 fi;
 
 if grep_check_config VNDK_VERSION; then
-  item "▸ Migrating VNDK version metadata...";
+  uiprint "▸ Migrating VNDK version metadata..."
   VNDK_VERSION="$(grep_get_config VNDK_VERSION)";
 fi;
 
 if [ -n "$DEVICE_INITIAL_SDK_INT" ] && ! grep_check_config api_level; then
-  item "▸ Mapping initial API level metadata...";
+  uiprint "▸ Mapping initial API level metadata..."
 fi;
 
 if [ -z "$DEVICE_INITIAL_SDK_INT" ] && grep_check_config FIRST_API_LEVEL; then
-  item "▸ Migrating legacy API level metadata...";
+  uiprint "▸ Migrating legacy API level metadata..."
   DEVICE_INITIAL_SDK_INT="$(grep_get_config FIRST_API_LEVEL)";
 fi;
 
 if [ -z "$RELEASE" -o -z "$INCREMENTAL" -o -z "$TYPE" -o -z "$TAGS" -o "$OVERRIDE" ]; then
   if [ "$OVERRIDE" ]; then
-    item "▸ Refreshing fingerprint-derived metadata...";
+    uiprint "▸ Refreshing fingerprint-derived metadata..."
   else
-    item "▸ Resolving missing metadata from fingerprint...";
+    uiprint "▸ Resolving missing metadata from fingerprint..."
   fi;
   IFS='/:' read F1 F2 F3 F4 F5 F6 F7 F8 <<EOF
 $(grep_get_config FINGERPRINT)
@@ -137,12 +136,12 @@ EOF
 fi;
 
 if [ -z "$SECURITY_PATCH" -o "$SECURITY_PATCH" = "null" ]; then
-  item "▸ Security patch unavailable; leaving value unset...";
+  uiprint "▸ Security patch unavailable; leaving value unset..."
   unset SECURITY_PATCH;
 fi;
 
 if [ -z "$DEVICE_INITIAL_SDK_INT" -o "$DEVICE_INITIAL_SDK_INT" = "null" ]; then
-  item "▸ API level unavailable; applying default profile...";
+  uiprint "▸ API level unavailable; applying default profile..."
   DEVICE_INITIAL_SDK_INT=25;
 fi;
 
@@ -158,7 +157,7 @@ verboseLogs=0;
 
 keep_advanced() {
   if grep -qE "verboseLogs|VERBOSE_LOGS" "$1"; then
-    item "▸ Preserving existing profile settings...";
+    uiprint "▸ Preserving existing profile settings..."
     ADVANCED=1;
     grep_check_config VERBOSE_LOGS "$1" && verboseLogs="$(grep_get_config VERBOSE_LOGS "$1")";
     for SETTING in $ADVSETTINGS; do
@@ -174,7 +173,7 @@ keep_advanced() {
 }
 if [ -f "$OUT" ]; then
   keep_advanced "$OUT";
-  item "▸ Backing up previous profile configuration...";
+  uiprint "▸ Backing up previous profile configuration..."
   mv -f "$OUT" "$OUT.bak";
 else
   case "$FILE" in
@@ -183,8 +182,8 @@ else
   esac;
 fi;
 
-[ "$INSTALL" ] || item "▸ Writing updated custom PIF profile...";
-[ "$ADVANCED" ] && item "▸ Applying advanced profile settings...";
+[ "$INSTALL" ] || uiprint "▸ Writing updated custom PIF profile..."
+[ "$ADVANCED" ] && uiprint "▸ Applying advanced profile settings..."
 
 case $FORMAT in
   json) CMNT='  //'; EVALPRE='\ \ \ \ \"'; SECPRE1='    '; SECPRE2='"'; PRE='    "'; MID='": "'; POST='",';;
@@ -208,4 +207,4 @@ if [ "$ADVANCED" ]; then
 fi) | sed '$s/,/\n}/' > "$OUT";
 
 # [ "$INSTALL" ] || cat "$OUT";
-item "▸ Profile generation completed successfully.";
+uiprint "▸ Profile generation completed successfully."
