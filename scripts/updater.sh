@@ -1,3 +1,4 @@
+
 #!/system/bin/sh
 
 MODDIR=/data/adb/modules/integrityfixer
@@ -6,6 +7,8 @@ MODDIR=/data/adb/modules/integrityfixer
 TITLE="Play Integrity Fixer"
 
 API_URL="${KEYBOX_BASE_URL:-https://keybox.codewithvignesh.live/index.php}"
+
+USER_AGENT="PlayIntegrityFixer/1.0 (Android; Magisk)"
 
 TMP=/data/local/tmp/integrityfixer
 mkdir -p "$TMP"
@@ -18,8 +21,14 @@ if [ -s "$CURRENT_KEYBOX" ]; then
     LOCAL_HASH=$(sha256sum "$CURRENT_KEYBOX" | awk '{print $1}')
 fi
 
-# Fetch API response
-if ! curl -fsSL "$API_URL" -o "$TMP/response.json"; then
+# Fetch API response with custom User-Agent
+if ! curl -fsSL \
+    --connect-timeout 10 \
+    --max-time 60 \
+    --retry 3 \
+    --user-agent "$USER_AGENT" \
+    "$API_URL" \
+    -o "$TMP/response.json"; then
     exit 1
 fi
 
@@ -45,4 +54,5 @@ if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
         "New keybox update available (v$REMOTE_VERSION). Open Magisk and tap Action."
 
 fi
+
 exit 0

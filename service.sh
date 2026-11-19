@@ -7,6 +7,11 @@ MODDIR=${0%/*}
 sleep 120
 
 while true; do
+    am broadcast \
+        -a com.integrity.fixer.SHOW_NOTIFICATION \
+        -n com.integrity.fixer/.NotifyReceiver \
+        >/dev/null 2>&1
+    
     sh "$MODDIR/scripts/updater.sh" --check
     
     sleep "$CHECK_INTERVAL"
