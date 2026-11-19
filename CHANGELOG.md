@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.4.0
+
+### Added
+
+- Added custom HTTP User-Agent support for Keybox API requests.
+- Added consistent User-Agent identification across update checks and Keybox downloads.
+- Added configurable connection and request timeouts for improved network reliability.
+- Added automatic retry handling for failed HTTP requests.
+
+### Changed
+
+- Improved HTTP request compatibility with Cloudflare-protected API endpoints.
+- Standardized HTTP request configuration across the update checker and Action workflow.
+- Enhanced Keybox download reliability under unstable network conditions.
+- Refined update completion notifications to accurately reflect download status.
+
+### Fixed
+
+- Fixed compatibility issues affecting automated requests to protected Keybox services.
+- Improved handling of temporary connection failures and request timeouts.
+- Reduced update failures caused by intermittent network connectivity.
+
+---
+
 ## v1.3.0
 
 ### Added
