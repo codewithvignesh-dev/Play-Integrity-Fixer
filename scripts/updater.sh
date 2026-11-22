@@ -6,7 +6,7 @@ MODDIR=/data/adb/modules/integrityfixer
 
 TITLE="Play Integrity Fixer"
 
-API_URL="${KEYBOX_BASE_URL:-https://keybox.codewithvignesh.live/index.php}"
+API_URL="${KEYBOX_BASE_URL:-https://keybox.codewithvignesh.live/}"
 
 USER_AGENT="PlayIntegrityFixer/1.0 (Android; Magisk)"
 
