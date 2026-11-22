@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.5.0
+
+### Added
+
+- Added support for the new Flask-based Keybox API backend.
+- Added compatibility with updated Keybox API response and download endpoints.
+- Added server-side Keybox caching and automated refresh support.
+- Added API health and availability checks.
+- Added improved error handling for API connection failures and request timeouts.
+
+### Changed
+
+- Migrated Keybox API integration from the legacy PHP backend to the new Python Flask WSGI architecture.
+- Improved Keybox update detection using server-side cached metadata.
+- Optimized API request handling to reduce unnecessary upstream requests.
+- Improved compatibility with cPanel-hosted Keybox API services.
+- Enhanced Keybox download and update workflows for better reliability.
+- Refined network timeout and retry behavior for improved stability.
+
+### Fixed
+
+- Fixed compatibility issues related to the legacy Keybox API implementation.
+- Improved handling of HTTP 500 errors and server-side request timeouts.
+- Reduced unnecessary network requests during temporary API outages.
+- Improved Keybox update reliability under unstable network conditions.
+- Various performance improvements, compatibility fixes, and stability enhancements.
+
+---
+
 ## v1.4.0
 
 ### Added
