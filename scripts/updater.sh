@@ -37,11 +37,19 @@ REMOTE_HASH=$(grep -o '"sha256"[[:space:]]*:[[:space:]]*"[^"]*"' "$TMP/response.
     | cut -d'"' -f4)
 
 # Extract remote version
-REMOTE_VERSION=$(grep '"version"' "$TMP/response.json" |
-    cut -d':' -f2 |
-    tr -d ' ,'
+REMOTE_VERSION=$(
+    grep -o '"version"[[:space:]]*:[[:space:]]*[0-9][0-9]*' "$TMP/response.json" |
+    sed 's/.*:[[:space:]]*//'
 )
 
+case "$REMOTE_VERSION" in
+    ''|*[!0-9]*)
+        echo "ERROR: Invalid or missing remote version"
+        exit 1
+        ;;
+esac
+
+echo "Remote Version: $REMOTE_VERSION"
 # Validate required fields
 [ -n "$REMOTE_HASH" ] || exit 1
 [ -n "$REMOTE_VERSION" ] || exit 1
