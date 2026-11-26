@@ -1,7 +1,7 @@
 id=integrityfixer
 name=Play Integrity Fixer
-version=v1.5.0
-versionCode=150
+version=v1.5.1
+versionCode=151
 author=CodeWithVignesh
 description=Automatically checks, downloads, and applies the latest Play Integrity keybox to help maintain device integrity.
 updateJson=https://raw.githubusercontent.com/codewithvignesh-dev/Play-Integrity-Fixer/main/update.json

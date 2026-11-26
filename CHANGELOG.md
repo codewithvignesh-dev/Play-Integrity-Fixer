@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.5.1
+
+### Added
+
+- Added numeric validation for the remote Keybox version.
+- Added error reporting for invalid or missing version values.
+- Added remote version logging for improved debugging.
+
+### Changed
+
+- Improved JSON-based remote version extraction in `updater.sh`.
+- Replaced legacy version parsing with pattern-based extraction for better reliability.
+- Improved compatibility with compact JSON API responses.
+
+### Fixed
+
+- Fixed incorrect remote version extraction from Keybox API responses.
+- Fixed update checks failing due to malformed or invalid version values.
+- Improved overall update checker stability and reliability.
+
+---
+
 ## v1.5.0
 
 ### Added
